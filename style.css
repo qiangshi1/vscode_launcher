@@ -1,0 +1,33 @@
+*{
+    font-family:"Microsoft YaHei",微软雅黑
+}
+
+input{
+    width: 300px;
+}
+
+.outer_div{
+    position:absolute; 
+    top:10%;
+    left:10%; 
+}
+
+.button_style{
+    margin-top: 8px;
+    /* margin-bottom: px; */
+}
+
+/* .dropdown ul li{ */
+ul{
+    padding-left: 25px;
+}
+li{
+    list-style: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    padding-bottom: 3px;
+}
+li:hover{
+    border-color: rgb(0, 136, 255);
+}

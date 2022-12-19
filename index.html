@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <title>vscode launcher</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <form onsubmit="return false" class="outer_div" autocomplete="on">
+        user@host:<br>
+        <input type="text" id="user_host" autocomplete="on" onclick="openDropdown(this)" oninput="updateContent(this)">
+        </input>
+        <br>
+        directory:<br>
+        <input type="text" id="directory" autocomplete="on">
+        <div style="text-align:center">  
+            <button class="button_style">launch</button>
+        </div>
+        </form>
+        <script src="input.js"></script>
+        <script src="button.js"></script>
+    </body>
+</html>

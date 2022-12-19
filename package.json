@@ -1,0 +1,98 @@
+{
+  "name": "your-app",
+  "version": "0.0.1",
+  "main": "main.js",
+  "scripts": {
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "start": "electron ."
+  },
+  "build": {
+    "productName": "vscode_launcher",
+    "appId": "weilai.info",
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://127.0.0.1/electron"
+      }
+    ],
+    "copyright": "0.1",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "build/",
+      "node_modules/",
+      "button.js",
+      "index.html",
+      "main.js",
+      "package.json",
+      "style.css"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./build/icons/icon.ico",
+      "uninstallerIcon": "./build/icons/icon.ico",
+      "installerHeaderIcon": "./build/icons/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "electron",
+      "artifactName": "${productName}-${version}-${os}-${arch}-setup.${ext}",
+      "include": "build/script/installer.nsh"
+    },
+    "win": {
+      "icon": "./build/icons/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "backgroundColor": "#FFFFFF",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "title": "TiEthWallet ${version}"
+    },
+    "mac": {
+      "icon": "build/icons/icon.icns"
+    },
+    "linux": {
+      "icon": "build/icons"
+    }
+  },
+  "devDependencies": {
+    "electron": "^3.1.9",
+    "electron-builder": "^22.7.0"
+  },
+  "dependencies": {
+    "electron-store": "4.0.0",
+    "electron-updater": "4.3.5",
+    "fs-extra": "^8.1.0",
+    "iconv-lite": "0.4.19",
+    "lowdb": "^5.0.5"
+  }
+}
