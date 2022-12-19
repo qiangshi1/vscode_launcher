@@ -1,18 +1,11 @@
-const Store = require('electron-store');
+const {app, BrowserWindow} = require('electron')  // 基础资源
+const Store = require('electron-store');  // 持久化资源
 const store = new Store();
+const Menu = require('electron').Menu;  // 菜单资源，仅用于阻止菜单
+const ipcMain = require('electron').ipcMain;  // ipc资源
 
-const {app, BrowserWindow} = require('electron')
-// const {remote} = require('electron')
-const Menu = require('electron').Menu;
-
-const ipcMain = require('electron').ipcMain;
-// const store = new (require('electron-store'))
-// const sessionCookieStoreKey = 'cookies.mainWindow'
-
-// const windows = [];
-
-
-var userhost_and_dir = [
+// 测试持久化 1
+var dropdown_per = [
     {
         "userhost": "shiqiang@172.16.12.144",
         "dirs": [
@@ -43,176 +36,48 @@ var userhost_and_dir = [
     // }
 ];
 
-last_data={
+// 测试持久化 2
+input_per={
     "userhost": "shiqiang@172.16.12.144",
     "dir": "home/shiqiang/" 
 };
-
-// store.set('candidate_data', userhost_and_dir);
-// store.set('last_data', last_data);
+// store.set('dropdown_per', dropdown_per);
+// store.set('input_per', input_per);
 console.log(store.get('candidate_data'));
 
-child_id=0;
+dropdown_winid=0; // 下拉菜单（本质上是个进程）id，下拉菜单最多只可能有一个，为0表示不存在下拉菜单
 
-// 创建全局变量并在下面引用，避免被GC
-let win
+let base_win // 主窗口
+
 function createWindow () {
-    // 创建浏览器窗口并设置宽高
-    win = new BrowserWindow({width: 400, height: 180, resizable: false})
-    
-    // 加载页面
-    win.loadFile('./index.html')
-    
-    // 打开开发者工具
-    win.webContents.openDevTools()
-    
-    // 添加window关闭触发事件
-    
-    win.on('closed', () => {
-        win = null  // 取消引用
+    base_win = new BrowserWindow({width: 400, height: 180, resizable: false}); // 创建浏览器窗口并设置宽高
+    base_win.loadFile('./index.html') // 加载页面
+    // base_win.webContents.openDevTools() // 打开开发者工具
+    base_win.on('closed', () => { // 添加window关闭触发事件
+        base_win = null  // 取消引用
     })
-
-    win.on('move', () => {
-        win_position=win.getPosition();
-        // console.log('movemovemove');
-        // console.log(win.childrens);
-        // win.childrens
-        
-        win_position=win.getPosition();
-        // console.log(win.id);
-        // console.log(BrowserWindow.getAllWindows());
-        // win.
-        // child = BrowserWindow.fromId(2);
-        // console.log(child);
-        if(child_id != 0){
-            BrowserWindow.fromId(child_id).send('move2dropdown', win_position);
+    base_win.on('move', () => {  // 主窗口移动
+        win_position=base_win.getPosition();
+        if(dropdown_winid != 0){ // 如果下拉菜单存在
+            // 向下拉菜单发送主窗口位置，实现功能是下拉菜单跟随主窗口移动
+            BrowserWindow.fromId(dropdown_winid).send('basewin_pos', win_position); 
         }
-        // ipcRenderer.send('move2dropdown', win_position);
-
-        // win.webContents.send('move2dropdown', win_position);
     })
-    // windows.push(win);
-    Menu.setApplicationMenu(null);
-
-
-    // let child = new BrowserWindow({parent: win, modal: true});
-    // child.loadURL('https://github.com');
-
-    // childWin = new BrowserWindow({
-    //     parent: win, 
-    //     width: 400, 
-    //     height: 300,
-    //     module: true
-    // });
-     
-    // childWin.loadFile('dropdown.html');
-    // let promise = new Promise((resolve) => {
-    //     let cookies = store.get(sessionCookieStoreKey) || [];
-    //     let recoverTimes = cookies.length;
-    //     if (recoverTimes <= 0) {
-    //         //无cookie数据无需恢复现场
-    //         resolve()
-    //         return;
-    //     }
-    //     //恢复cookie现场
-    //     cookies.forEach((cookiesItem) => {
-    //         let {
-    //             secure = false,
-    //             domain = '',
-    //             path = ''
-    //         } = cookiesItem
-
-    //         win.webContents.session.cookies
-    //             .set(
-    //                 Object.assign(cookiesItem, {
-    //                     url: (secure ? 'https://' : 'http://') + domain.replace(/^\./, '') + path
-    //                 })
-    //             )
-    //             .then(() => {
-    //             })
-    //             .catch((e) => {
-    //                 console.error({
-    //                     message: '恢复cookie失败',
-    //                     cookie: cookiesItem,
-    //                     errorMessage: e.message,
-    //                 })
-    //             })
-    //             .finally(() => {
-    //                 recoverTimes--;
-    //                 if (recoverTimes <= 0) {
-    //                     resolve();
-    //                 }
-    //             })
-    //     });
-    // })
-    // promise.then(() => {
-    //     //监听cookie变化保存cookie现场
-    //     return new Promise((resolve) => {
-    //         let isCookiesChanged = false;
-    //         win.webContents.session.cookies.on('changed', () => {
-    //             //检测cookies变动事件，标记cookies发生变化
-    //             isCookiesChanged = true;
-    //         });
-
-    //         //每隔500毫秒检查是否有cookie变动，有变动则进行持久化
-    //         setInterval(() => {
-    //             if (!isCookiesChanged) {
-    //                 return;
-    //             }
-    //             win.webContents.session.cookies.get({})
-    //                 .then((cookies) => {
-    //                     store.set(sessionCookieStoreKey, cookies);
-    //                 })
-    //                 .catch((error) => {
-    //                     console.log({error})
-    //                 })
-    //                 .finally(() => {
-    //                     isCookiesChanged = false;
-    //                 })
-    //         }, 500);
-
-    //         resolve();
-    //     })
-    // })
-
+    Menu.setApplicationMenu(null);  // 组织默认菜单
 }
-ipcMain.on('dropdown2ipc', function(event, arg) {
-    console.log("xxxxxxxxxxxxxxxxxxx");
-    console.log(arg);  
-    win.webContents.send('ipc2input', arg);
+// 下拉菜单发送过来的被选中的条目
+ipcMain.on('dropdown_userhost_li', function(event, userhost) {
+    base_win.webContents.send('input_userhost', userhost); // 用于在basewin的input中显示
 });
-
-ipcMain.on('drag', function(event, arg) {
-    console.log("drag-xxxx");
-    // console.log(arg);  
-    console.log(win);
-    // win.webContents.send('ipc2input', arg);
+// 更新dropdown窗口id
+ipcMain.on('update_dropdown_winid', function(event, d_wi) {
+    dropdown_winid=d_wi;
 });
-
-ipcMain.on('move2dropdown', function(event, arg) {
-    console.log("move2dropdown");
-    console.log(arg); // prints "pong"
-    // document.querySelector("#user_host").value=arg;
-});
-
-ipcMain.on('add_child_id', function(event, arg) {
-    console.log("add_child_id");
-    child_id=arg;
-});
-
-// ipcMain.on('set_store', function(event, arg) {
-//     console.log("set_store");
-//     // store.set('store', 123);
-// });
-
-ipcMain.on('get_candidate_data_ask', function(event, id) {
-    console.log("get_candidate_data_ask");
-    console.log(id);
-    if(id != 0){
-        // BrowserWindow.fromId(id).send('get_candidate_data_reply', store.get('candidate_data'));
-        setTimeout(function() {
-            // console.log(store.get('candidate_data'));
-            BrowserWindow.fromId(id).send('get_candidate_data_reply', store.get('candidate_data'));
+// 请求dropdown的持久化资源，携带dropdwon窗口id
+ipcMain.on('ask_dropdown_per', function(event, d_wi) {
+    if(d_wi != 0){
+        setTimeout(function() { // 防抖
+            BrowserWindow.fromId(d_wi).send('reply_dropdown_per', store.get('dropdown_per'));
         }, 10);
     }
 });
@@ -283,7 +148,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
 // 在macOS上，当单击dock图标并且没有其他窗口打开时，
 // 通常在应用程序中重新创建一个窗口。
-    if (win === null) {
+    if (base_win === null) {
       createWindow();
     }
 })

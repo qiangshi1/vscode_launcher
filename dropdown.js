@@ -9,10 +9,10 @@ const { remote } = require("electron");
 // });
 
 child_move_event_timer = {};
-ipcRenderer.send('get_candidate_data_ask', remote.getCurrentWindow().id);
+ipcRenderer.send('ask_dropdown_per', remote.getCurrentWindow().id);
 
-ipcRenderer.on('move2dropdown', function (event, pos) {
-    // console.log("move2dropdown");
+ipcRenderer.on('basewin_pos', function (event, pos) {
+    // console.log("basewin_pos");
     this_window = remote.getCurrentWindow();
     // this_window.setPosition(parseInt(pos[0]+43), parseInt(pos[1]+87), false);
     // this_window.setContentSize(700, 260, false);
@@ -42,7 +42,7 @@ function liclick(obj) {
     obj.querySelector('span');
     console.log(obj.querySelector('span'));
     this_window = remote.getCurrentWindow();
-    ipcRenderer.send('dropdown2ipc', obj.querySelector('span').textContent);
+    ipcRenderer.send('dropdown_userhost_li', obj.querySelector('span').textContent);
     // const id = remote.getGlobal('sharedObject').independentWindow.get('窗口名windowTitle');
     // console.log(remote.getGlobal(''));
     // this_window.close();
@@ -76,9 +76,9 @@ var candidate_data;
 
 
 
-ipcRenderer.on('get_candidate_data_reply', function (event, cd) {
+ipcRenderer.on('reply_dropdown_per', function (event, cd) {
     candidate_data=cd;
-    console.log('get_candidate_data_reply');
+    console.log('reply_dropdown_per');
     console.log(cd);
     // console.log(cd);
     update_ul('');

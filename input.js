@@ -20,7 +20,7 @@ const {BrowserWindow} = require('electron')
 console.log('get_last_data_ask123');
 ipcRenderer.send('get_last_data_ask', remote.getCurrentWindow().id);
 
-ipcRenderer.on('ipc2input', function(event, arg) {
+ipcRenderer.on('input_userhost', function(event, arg) {
     console.log("yyyyyyyyyyyyyyy");
     console.log(arg); // prints "pong"
     document.querySelector("#user_host").value=arg;
@@ -37,14 +37,6 @@ ipcRenderer.on('get_last_data_reply', function(event, arg) {
     console.log(arg.dir);
     // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 });
-
-
-// ipcRenderer.on('move2dropdown', function(event, arg) {
-//     console.log("move2dropdown");
-//     console.log(arg); // prints "pong"
-//     // document.querySelector("#user_host").value=arg;
-// });
-
 
 document.addEventListener("keydown", keydown);
 
@@ -97,7 +89,7 @@ function openDropdown(obj) {
             frame: false, 
             resizable: false
         });
-        ipcRenderer.send('add_child_id', child.id);
+        ipcRenderer.send('update_dropdown_winid', child.id);
         child.on('close_dropdown', () => {
             console.log('close_dropdown');
         })
@@ -108,10 +100,10 @@ function openDropdown(obj) {
         
         remote.getCurrentWindow().show();
         // console.log("here1");
-        // ipcRenderer.send('get_candidate_data_ask', child.id);
+        // ipcRenderer.send('ask_dropdown_per', child.id);
         // console.log(child.id);
         child.on("close", () => {
-            ipcRenderer.send('add_child_id', 0); 
+            ipcRenderer.send('update_dropdown_winid', 0); 
             child_is_on=false; 
             child = null;
         });
@@ -128,8 +120,8 @@ function updateContent(obj) {
 }
 // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxasdxxxxxxxxxxxxxxxxxxx");
 // console.log(ipcMain);
-// ipcMain.on('dropdown2ipc', function(event, arg) {
+// ipcMain.on('dropdown_userhost_li', function(event, arg) {
 //     console.log("xxxxxxxxxxxxxxxxxxx");
 //     console.log(arg);  // prints "ping"
-//     // child.webContents.send('ipc2input', arg);
+//     // child.webContents.send('input_userhost', arg);
 // });
