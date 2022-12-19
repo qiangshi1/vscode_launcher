@@ -39,7 +39,7 @@ var dropdown_per = [
 // 测试持久化 2
 input_per={
     "userhost": "shiqiang@172.16.12.144",
-    "dir": "home/shiqiang/" 
+    "dir": "/home/shiqiang/" 
 };
 store.set('dropdown_per', dropdown_per);
 store.set('input_per', input_per);
@@ -123,10 +123,6 @@ ipcMain.on('close_dropdown', function(event, arg) {
 // 用户按下button，保存当前的userhost和dir
 ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
     var dd_p = store.get('dropdown_per');
-    console.log('------------------------------------------------');
-    console.log(userhost);
-    console.log(dir);
-    console.log('------------------------------------------------');
     var found_userhost=false;
     var index=0;
     for (let i=0; i<dd_p.length; i++){
@@ -138,19 +134,23 @@ ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
     }
     if(found_userhost==false){
         var a_new_item={};
-        a_new_item.dirs=[];
         a_new_item.userhost=userhost;
+        a_new_item.dirs=[];
         a_new_item.dirs.push(dir);
-        console.log(a_new_item);
         dd_p.push(a_new_item);
     }else{
         var a_new_item=dd_p[index];
         a_new_item.userhost=userhost;
         a_new_item.dirs.push(dir);
+        // console.log('------------------------');
+        // console.log(a_new_item);
         dd_p[index]=a_new_item;
     }
-    console.log(dd_p);
     store.set('dropdown_per', dd_p);
+    var i_p={};
+    i_p.userhost=userhost;
+    i_p.dir=dir;
+    store.set('input_per', i_p);
 });
 
 // 初始化后 调用函数

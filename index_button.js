@@ -28,10 +28,7 @@ function launch_vscode(user_host, dir) {
     
 }
 
-function saveUserhostDir(userhost, dir){
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-    console.log(userhost);
-    console.log(dir);
+function saveUserhostDir(userhost, dir){ 
     ipcRenderer.send('save_userhost_dir', userhost, dir);
 }
 
