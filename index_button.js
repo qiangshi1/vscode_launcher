@@ -1,8 +1,9 @@
-function launch_vscode(user_host, directory) {
+function launch_vscode(user_host, dir) {
+    // console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
     const exec = require('child_process').exec;
     // 任何你期望执行的cmd命令，ls都可以
     // 执行cmd命令的目录，如果使用cd xx && 上面的命令，这种将会无法正常退出子进程
-    cmdStr="code --remote ssh-remote+"+user_host+" "+directory;
+    cmdStr="code --remote ssh-remote+"+user_host+" "+dir;
     let workerProcess;
     var arr = [];
 
@@ -27,58 +28,17 @@ function launch_vscode(user_host, directory) {
     
 }
 
-
+function saveUserhostDir(userhost, dir){
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    console.log(userhost);
+    console.log(dir);
+    ipcRenderer.send('save_userhost_dir', userhost, dir);
+}
 
 launch_button = document.querySelector('.button_style');
 launch_button.onclick=function(){
-    console.log("=================123============");
-    input_user_host=document.querySelector("#user_host");
-    console.log(input_user_host);
-    directory=document.querySelector("#directory");
-    console.log(directory);
-    // launch_vscode(user_host.value, directory.value);
-    // 除了launch之外还保存cookies
-    // save_cookies();
-    
+    userhost=document.querySelector("#user_host").value;
+    dir=document.querySelector("#directory").value;
+    // launch_vscode(userhost, dir);
+    saveUserhostDir(userhost, dir);
 } 
-
-const session = require("electron").remote.session;
-
-function save_cookie(){
-    console.log("=============save_cookie============");
-    input_user_host=document.querySelector("#user_host").value;
-    // console.log(input_user_host);
-    directory=document.querySelector("#directory").value;
-    // console.log(directory);
-    // launch_vscode(user_host.value, directory.value);
-
-}
-
-
-
-// var cmd=require('node-cmd');
- 
-// cmd.get(
-//     'pwd',
-//     function(err, data, stderr){
-//         console.log('the current working dir is : ',data)
-//     }
-// );
-
-// cmd.run('touch example.created.file');
-
-// cmd.get(
-//     `
-//         git clone https://github.com/RIAEvangelist/node-cmd.git
-//         cd node-cmd
-//         ls
-//     `,
-//     function(err, data, stderr){
-//         if (!err) {
-//            console.log('the node-cmd cloned dir contains these files :\n\n',data)
-//         } else {
-//            console.log('error', err)
-//         }
-
-//     }
-// );

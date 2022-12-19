@@ -60,14 +60,9 @@ function openDropdown(obj) {  // input被选中
         }, 15);
     }
 }
-// 
+// 是否有dropdown持久化程序，若没有，不打开dropdown窗口
 ipcRenderer.on('reply_dropdown_per', function (event, dd_p) {
-    console.log('reply_dropdown_per');
-    console.log(dd_p);
-    // alert("bb");
     if (dd_p.length==0){
-        // alert("aa");
-        console.log('dd_p==[]');
         if(dropdown_per_timer!=null){
             clearTimeout(dropdown_per_timer);
             has_dropdown_win=false;
@@ -78,8 +73,7 @@ ipcRenderer.on('reply_dropdown_per', function (event, dd_p) {
 });
 
 
-
-function updateContent(obj) {
+function inputValueChange(obj) {
     console.log(obj.value);
     ipcRenderer.send('input_value_change', obj.value);
 }

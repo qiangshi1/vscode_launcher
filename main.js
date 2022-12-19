@@ -120,6 +120,38 @@ ipcMain.on('close_dropdown', function(event, arg) {
         BrowserWindow.fromId(dropdown_winid).close();
     }
 });
+// 用户按下button，保存当前的userhost和dir
+ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
+    var dd_p = store.get('dropdown_per');
+    console.log('------------------------------------------------');
+    console.log(userhost);
+    console.log(dir);
+    console.log('------------------------------------------------');
+    var found_userhost=false;
+    var index=0;
+    for (let i=0; i<dd_p.length; i++){
+        if(dd_p[i].userhost==userhost){
+            found_userhost=true;
+            index=i;
+            break;
+        }
+    }
+    if(found_userhost==false){
+        var a_new_item={};
+        a_new_item.dirs=[];
+        a_new_item.userhost=userhost;
+        a_new_item.dirs.push(dir);
+        console.log(a_new_item);
+        dd_p.push(a_new_item);
+    }else{
+        var a_new_item=dd_p[index];
+        a_new_item.userhost=userhost;
+        a_new_item.dirs.push(dir);
+        dd_p[index]=a_new_item;
+    }
+    console.log(dd_p);
+    store.set('dropdown_per', dd_p);
+});
 
 // 初始化后 调用函数
 app.on('ready', createWindow)  
