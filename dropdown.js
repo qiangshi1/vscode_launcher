@@ -24,6 +24,7 @@ ipcRenderer.on('basewin_pos', function (event, pos) {
 
     // console.log(arg); // prints "pong"
     // document.querySelector("#user_host").value=arg;
+    
     (function () {
         // 核心在这里，先清除定时器
         clearTimeout(child_move_event_timer);
@@ -93,7 +94,7 @@ ipcRenderer.on('reply_dropdown_per', function (event, cd) {
             event.target.parentNode.remove(event.target);
             // console.log(event.target.parentNode.querySelector('li').length);
             console.log(the_ul);
-            ipcRenderer.send('delete_userhost', userhost_tobe_deleted);
+            ipcRenderer.send('delete_in_per', userhost_tobe_deleted, 0);
             if(the_ul.querySelectorAll('li').length==0){
                 this_window = remote.getCurrentWindow();
                 this_window.close();
@@ -190,10 +191,10 @@ function update_ul(current_input){
     ul_dropdown.innerHTML = text;
 }
 
-ipcRenderer.on('current_input_value2', function (event, arg) {
-    // console.log('current_input_value2-1');
+ipcRenderer.on('current_input_value', function (event, arg) {
+    // console.log('current_input_value-1');
     // console.log(arg);
     // console.log(event);
-    // console.log('current_input_value2-2');
+    // console.log('current_input_value-2');
     update_ul(arg);
 });
