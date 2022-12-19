@@ -261,6 +261,13 @@ ipcMain.on('current_input_value', function(event, arg) {
     }
 });
 
+ipcMain.on('close_child_win', function(event, arg) {
+    console.log('close_child_win');
+    if (BrowserWindow.getAllWindows().length == 2){
+        BrowserWindow.getAllWindows()[1].close();
+    }
+});
+
 
 // 初始化后 调用函数
 app.on('ready', createWindow)  

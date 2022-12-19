@@ -4,6 +4,18 @@ const ipcRenderer = require('electron').ipcRenderer;
 
 const {BrowserWindow} = require('electron')
 
+// document.addEventListener("keydown", keydown);
+// function keydown(event) {
+//     //表示键盘监听所触发的事件，同时传递参数event
+//     switch (event.keyCode) {
+//         case 27: // esc
+//             break;
+//         default:
+//             console.log('yyyyyyyyyyyyyyyyyy');
+//             console.log(event.keyCode);
+//             break;
+//     }
+// }
 
 console.log('get_last_data_ask123');
 ipcRenderer.send('get_last_data_ask', remote.getCurrentWindow().id);
@@ -40,13 +52,14 @@ function keydown(event) {
     //表示键盘监听所触发的事件，同时传递参数event
     console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     console.log(event.keyCode);
-    // switch (event.keyCode) {
-    //     case 9: 
-    //         return;
-    //     default:
-    //         // console.log(event.keyCode);
-    //         break;
-    // }
+    switch (event.keyCode) {
+        case 27: 
+            ipcRenderer.send('close_child_win', '');
+            break;
+        default:
+            // console.log(event.keyCode);
+            break;
+    }
     // console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 }
 
@@ -103,8 +116,8 @@ function openDropdown(obj) {
             child = null;
         });
     }else{
-        console.log(child_is_on);
-        child.close();
+        // console.log(child_is_on);
+        // child.close();
     }
 
 }
