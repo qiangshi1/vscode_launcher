@@ -39,8 +39,8 @@ function Minimum(a, b, c) {
 }
 
 
-console.log(similarity2('456', '123'));
-console.log(similarity2('456', '654'));
+// console.log(similarity2('456', '123'));
+// console.log(similarity2('456', '654'));
 
 var base_str='';
 function compare(v1, v2){
