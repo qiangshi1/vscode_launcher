@@ -1,6 +1,6 @@
 {
-  "name": "your-app",
-  "version": "0.0.1",
+  "name": "vscode_launcher",
+  "version": "1.1.0",
   "main": "main.js",
   "scripts": {
     "pack": "electron-builder --dir",
@@ -23,11 +23,15 @@
     "files": [
       "build/",
       "node_modules/",
-      "button.js",
+      "d_similarity2.js",
+      "dropdown.html",
+      "dropdown.js",
+      "i_input.js",
+      "i_submit.js",
       "index.html",
       "main.js",
-      "package.json",
-      "style.css"
+      "style.css",
+      "package.json"
     ],
     "nsis": {
       "oneClick": false,

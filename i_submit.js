@@ -36,6 +36,6 @@ launch_button = document.querySelector('.button_style');
 launch_button.onclick=function(){
     userhost=document.querySelector("#user_host").value;
     dir=document.querySelector("#directory").value;
-    // launch_vscode(userhost, dir);
+    launch_vscode(userhost, dir);
     saveUserhostDir(userhost, dir);
 } 
