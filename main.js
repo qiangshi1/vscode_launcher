@@ -128,6 +128,7 @@ ipcMain.on('close_dropdown', function(event, arg) {
 ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
     var dd_p = store.get('dropdown_per');
     var found_userhost=false;
+    var found_dir=false;
     var index=0;
     // console.log(userhost);
     // console.log(dir);
@@ -152,7 +153,6 @@ ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
     }else{
         // console.log("else found_userhost==false");
         var a_exit_item=dd_p[index];
-        var found_dir=false;
         for(var j=0; j<a_exit_item.dirs.length; j++){
             // console.log(a_exit_item.dirs);
             if(a_exit_item.dirs[j]==dir){
@@ -175,6 +175,17 @@ ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
     i_p.userhost=userhost;
     i_p.dir=dir;
     store.set('input_per', i_p);
+    // // 如果存储数据有更新，同时dropdown页面存在，要更新dropdown页面
+    // var found_userhost=false;
+    // var found_dir=false;
+    // console.log('here1');
+    // console.log(dropdown_winid);
+    // console.log(found_userhost);
+    // console.log(found_dir);
+    if((found_userhost==false||found_dir==false)&&dropdown_winid != 0){
+        // console.log('here2');
+        BrowserWindow.fromId(dropdown_winid).send('reply_dropdown_per', store.get('dropdown_per'));
+    }
 });
 
 // 初始化后 调用函数
