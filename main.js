@@ -129,7 +129,13 @@ ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
     var dd_p = store.get('dropdown_per');
     var found_userhost=false;
     var index=0;
+    // console.log(userhost);
+    // console.log(dir);
     for (let i=0; i<dd_p.length; i++){
+        // console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+        // console.log(dd_p[i]);
+        // console.log(i);
+        // console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         if(dd_p[i].userhost==userhost){
             found_userhost=true;
             index=i;
@@ -137,18 +143,32 @@ ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
         }
     }
     if(found_userhost==false){
+        // console.log("found_userhost==false");
         var a_new_item={};
         a_new_item.userhost=userhost;
         a_new_item.dirs=[];
         a_new_item.dirs.push(dir);
         dd_p.push(a_new_item);
     }else{
-        var a_new_item=dd_p[index];
-        a_new_item.userhost=userhost;
-        a_new_item.dirs.push(dir); // 查个重
-        // console.log('------------------------');
-        // console.log(a_new_item);
-        dd_p[index]=a_new_item;
+        // console.log("else found_userhost==false");
+        var a_exit_item=dd_p[index];
+        var found_dir=false;
+        for(var j=0; j<a_exit_item.dirs.length; j++){
+            // console.log(a_exit_item.dirs);
+            if(a_exit_item.dirs[j]==dir){
+                found_dir=true;
+                break;
+            }
+        }
+        if(found_dir==false){ // dir有更新，持久化要更新
+            // console.log("found_dir==false");
+            a_exit_item.dirs.push(dir);
+            // console.log('============================');
+            // console.log(dd_p);
+            dd_p[index]=a_exit_item;
+            // console.log(dd_p);
+            // console.log('============================');
+        }
     }
     store.set('dropdown_per', dd_p);
     var i_p={};
