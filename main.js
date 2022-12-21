@@ -114,6 +114,10 @@ ipcMain.on('input_value_change', function(event, input_value) {
         BrowserWindow.fromId(dropdown_winid).send('current_input_value', input_value);
     }
 });
+// input中的字段有更改，向dropdown窗口发送
+ipcMain.on('ask_input_value', function(event, ignore) {
+        base_win.webContents.send('reply_input_value', ignore);
+});
 // 关闭dropdown窗口，可以由按esc触发
 ipcMain.on('close_dropdown', function(event, arg) {
     if(dropdown_winid != 0){
@@ -141,7 +145,7 @@ ipcMain.on('save_userhost_dir', function(event, userhost, dir) {
     }else{
         var a_new_item=dd_p[index];
         a_new_item.userhost=userhost;
-        a_new_item.dirs.push(dir);
+        a_new_item.dirs.push(dir); // 查个重
         // console.log('------------------------');
         // console.log(a_new_item);
         dd_p[index]=a_new_item;

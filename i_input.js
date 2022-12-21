@@ -72,15 +72,11 @@ ipcRenderer.on('reply_dropdown_per', function (event, dd_p) {
     }
 });
 
-
 function inputValueChange(obj) {
-    console.log(obj.value);
     ipcRenderer.send('input_value_change', obj.value);
 }
-// console.log("xxxxxxxxxxxxxxxxxxxxxxxxxasdxxxxxxxxxxxxxxxxxxx");
-// console.log(ipcMain);
-// ipcMain.on('dropdown_userhost_li', function(event, arg) {
-//     console.log("xxxxxxxxxxxxxxxxxxx");
-//     console.log(arg);  // prints "ping"
-//     // dropdown.webContents.send('input_userhost', arg);
-// });
+
+ipcRenderer.on('reply_input_value', function (event, ignore) {
+    var user_host=document.querySelector('#user_host');
+    ipcRenderer.send('input_value_change', user_host.value);
+});
