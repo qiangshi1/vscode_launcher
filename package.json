@@ -42,7 +42,7 @@
       "installerHeaderIcon": "./build/icons/icon.ico",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "electron",
+      "shortcutName": "vscode_launcher",
       "artifactName": "${productName}-${version}-${os}-${arch}-setup.${ext}",
       "include": "build/script/installer.nsh"
     },

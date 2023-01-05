@@ -41,9 +41,9 @@ input_per={
     "userhost": "shiqiang@172.16.12.144",
     "dir": "/home/shiqiang/" 
 };
-store.set('dropdown_per', dropdown_per);
-store.set('input_per', input_per);
-console.log(store.get('candidate_data'));
+// store.set('dropdown_per', dropdown_per);
+// store.set('input_per', input_per);
+// console.log(store.get('candidate_data'));
 
 dropdown_winid=0; // 下拉菜单（本质上是个进程）id，下拉菜单最多只可能有一个，为0表示不存在下拉菜单
 dropdown_is_ready=false; // 下拉菜单是否就绪
